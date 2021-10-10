@@ -1,5 +1,6 @@
 package Assignment;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class assignment1 {
@@ -13,10 +14,11 @@ public class assignment1 {
 	
 	//these are the main storage in array list 
 	static ArrayList<Vaccine> Vaccine_List = new ArrayList<>();
-    	static ArrayList <Hospital> Hospital_List = new ArrayList<>();
-    	static ArrayList<Citizen> Citizen_List =new ArrayList<>();
+    static ArrayList <Hospital> Hospital_List = new ArrayList<>();
+    static ArrayList<Citizen> Citizen_List =new ArrayList<>();
+    static ArrayList<Vacine_Slots> Slots=new ArrayList<>();
     
-  	  public void home_display() {
+    public void home_display() {
 		while(true) {
 			
 			System.out.println("CoWin Portal initialized....");
@@ -36,7 +38,7 @@ public class assignment1 {
 			}else if(input==2) {
 				Methods.Register_Hospital();
 			}else if(input==3) {
-				
+				Methods.Register_Citizen();
 			}else if(input==4) {
 				
 			}else if(input==5) {
@@ -51,8 +53,6 @@ public class assignment1 {
 		}
 	}
 }
-
-
 	class Vaccine {
 
 	    String Vaccine_Name; int Number_doses; int Doses_Gap;
@@ -81,16 +81,16 @@ public class assignment1 {
 			System.out.println("Citizen Name: "+name+", Age: "+age+", Unique ID: "+uid);
 		}
 	}
-	
-	public static void main(String[] args) {
+	class Vacine_Slots{
+		int Hospital_ID;int Sltos_no; int Day_no; int Quanatiy; Vaccine Vac;
+		public Vacine_Slots(int hospid,int slot,int day,int qty,Vaccine vaxi) {
+			Hospital_ID = hospid;Sltos_no=slot; Day_no=day; Quanatiy=qty; Vac=vaxi;
+		}
 		
-		assignment1 obj =new assignment1 ();
-		obj.home_display();
-		 
+		
 		
 	}
-}
-class Methods{
+	class Methods{
 		
 		 public static void Add_Vaccine() {
 		    	
@@ -138,7 +138,48 @@ class Methods{
 			 		System.out.println("Invalid Unique Id");return;
 			 		//if not then terminatae this 
 			 	}
+			 	//covering the case if citizen is already registered 
+			 	int sz=assignment1.Citizen_List.size();
+			 	for (int i=0 ;i<sz;i++) {
+			 		if (assignment1.Citizen_List.get(i).UniqieId.equals(uid)) {
+		                System.out.println("You are already registered.");
+		                return;
+		            }
+		        }
 			 	Citizen citizen_obj=new Citizen(Citizen_Name,age,uid);
 			 	assignment1.Citizen_List.add(citizen_obj);	 	
 		 }
-}
+		 public static void Add_slot(){
+			 Scanner sc = new Scanner(System.in);
+			 System.out.println("Enter Hospital ID: ");
+			 int Hospital_ID=sc.nextInt();
+			 System.out.println("Enter number of Slots to be added: ");
+			 int Slots=sc.nextInt();
+			 System.out.println("Enter Day Number: ");
+			 int day=sc.nextInt();
+			 System.out.println("Enter Quantity: ");
+			 int qty=sc.nextInt();
+			 System.out.println("Select Vaccine ");
+			 int sz=assignment1.Vaccine_List.size();
+			 for (int i = 0; i < sz; i++) {
+				 	System.out.print(i +" "+assignment1.Vaccine_List.get(i).Vaccine_Name+ " ");
+		        }
+			 int set=sc.nextInt();
+			 Vaccine vax =assignment1.Vaccine_List.get(set); 
+			 Vacine_Slots slot_obj=new Vacine_Slots(Hospital_ID,Slots,day,qty,vax);
+			 int size=assignment1.Hospital_List.size();
+			 for(int i=0;i<size;i++) {
+				 if(assignment1.Hospital_List.get(i).UniqueId.equals(Hospital_ID)){
+					
+		            }
+
+		        }
+		    }
+		 }
+	
+
+	
+	
+		
+	
+
