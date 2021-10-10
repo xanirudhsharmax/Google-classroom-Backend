@@ -176,10 +176,71 @@ public class assignment1 {
 		        }
 		    }
 		 }
-	
-
-	
-	
+		class BookSlot{
+		
+		Scanner sc = new Scanner(System.in);
+		
+		
+		String Hospital_ID;
+		String personUniqueId;
+		String VaccineName;
+		
+		public void takeInput() {
+			System.out.println("Enter patient Unique Id: ");
+			personUniqueId = sc.next();
+			
+			System.out.println("1. Search by Area");
+			System.out.println("2. Search by Vaccine");
+			System.out.println("Exit");
+			System.out.print("Enter Option: ");
+			int choice = sc.nextInt();
+			
+			if(choice==1) {
+				System.out.println("Enter PinCode: ");
+				int PinCode = sc.nextInt();
+				
+				displayHospitals(PinCode);
+				
+				System.out.println("Enter hospital id: ");
+				Hospital_ID = sc.next();
+				
+				
+				
+			}else if(choice==2) {
+				
+			}else if(choice==3) {
+				
+			}else return;
+		}
+		
+		public void displayHospitals(int pin) {
+			for(Hospital h: assignment1.Hospital_List) {
+				if(h.Pincode==pin) {
+					System.out.println(h.Pincode + " " + h.Hospital_Name);
+				}
+			}
+		}
+		
+		
+		
+		public ArrayList<String[]> displaySlots(String hosId) {
+			ArrayList<String[]> arr = new ArrayList<>();
+			
+			for(Vacine_Slots v : assignment1.Slots) {
+				String s [] = new String[3];
+				if(v.Quanatiy>0) {
+					String str = v.Sltos_no + "-> " + "Day " + v.Day_no + " Available" + " Qty:" + v.Quanatiy + " Vaccine:" + v.Vac.Vaccine_Name;
+					s[0] = str;
+					s[1] = Integer.toString(v.Sltos_no);
+					s[2] = v.Vac.Vaccine_Name;
+				}
+			}
+			
+			return arr;
+		}
+		
+		
+	}
 		
 	
 
