@@ -40,10 +40,16 @@ public class Assignmentap {
 
         }
     }
-
-    public static void checkVaccine(String hosname){
+    public static void checkvac(String hospital_id){
+        for(int i=0;i<Assignmentap.hospital.size();i++){
+            if(Assignmentap.hospital.get(i).uniqueId.equals(hospital_id)){
+                System.out.println("Day :");
+            }
+        }
+    }
+    public static void checkVaccine(String ID){
         for(Add_Slot a: Assignmentap.slots){
-            if(a.hosp_name.equals(hosname) && a.Quantity>0){
+            if(a.hospId.equals(ID)){
                 System.out.println("Day: " + a.day_no + " Vaccine: " + a.vaccine_name + " Available" + "Qty: " +  a.Quantity);
             }
         }
@@ -93,15 +99,6 @@ public class Assignmentap {
         }
         return temp;
     }
-
-//    public static void List_Hospital_slots(String s) {
-//        for (int i = 0; i < Assignmentap.slots.size(); i++) {
-//            if (Assignmentap.slots.get(i).Hospital_ID == s) {
-//                System.out.println("Day: " + Assignmentap.slots.get(i).Day_no + " Vaccine: "
-//                        + Assignmentap.slots.get(i).Vaccine_Name + " Qty: " + Assignmentap.slots.get(i).Quanatiy);
-//            }
-//        }
-//    }
 
     public static void Add_Vaccine() {
         int Doses_Gap;
@@ -243,6 +240,7 @@ public class Assignmentap {
         int choice = sc.nextInt();
 
         if (choice == 1) {
+            System.out.println("Enter pincode: ");
             int Pin_code = sc.nextInt();
             Book_slot.findpin(Pin_code);
             for(Hospital h: Assignmentap.hospital) {
@@ -263,16 +261,17 @@ public class Assignmentap {
         String hospital_ID = sc.next();
 
         ArrayList<String[]> arr = new ArrayList<>();
-
+        int k=0;
         for(Add_Slot a : Assignmentap.slots){
             if(a.hospId.equals(hospital_ID)) {
-                String s = a.slot_no + "->" + "Day: " + a.day_no+ " Available" + " Qty:" + a.Quantity + " Vaccine:" + a.vaccine_name;
-                System.out.print(a.slot_no + "->" + "Day: " + a.day_no + " Available" + " Qty:" + a.Quantity + " Vaccine:" + a.vaccine_name);
+//                String s = a.slot_no + "->" + "Day: " + a.day_no+ " Available" + " Qty:" + a.Quantity + " Vaccine:" + a.vaccine_name;
+                System.out.println(k + "->" + "Day: " + a.day_no + " Available" + " Qty:" + a.Quantity + " Vaccine:" + a.vaccine_name);
                 String[] str = new String[3];
                 str[0] = Integer.toString(a.slot_no); str[1] = Integer.toString(a.day_no); str[2] = a.vaccine_name;
+                k++;
             }
         }
-        System.out.print("Choose slot: ");
+        System.out.println("Choose slot: ");
         int slot_num = sc.nextInt();
 
         if(slot_num>=arr.size() && slot_num<0) return;
@@ -451,7 +450,7 @@ class Book_slot {
     }
 
     public static void findpin(int Pin_code){
-        System.out.print("Enter pincode: ");
+        //System.out.print("Enter pincode: ");
         for (int i = 0; i < Assignmentap.hospital.size(); i++) {
             if (Assignmentap.hospital.get(i).Pincode == Pin_code) {
                 System.out.println(Assignmentap.hospital.get(i).uniqueId + " " + Assignmentap.hospital.get(i).Hospital_Name);
