@@ -47,7 +47,10 @@ public class assignment2new {
                         v.show();
 
                     }else if (choose == 4){
-
+                        Assignment a= new Assignment();
+                        a.show();
+                        quiz q=new quiz();
+                        q.show();
                     }else if (choose == 5){
                         System.out.println("5");
                     }else if (choose == 6){
