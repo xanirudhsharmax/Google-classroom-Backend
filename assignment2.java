@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.DataFormatException;
 
 public class assignment2new {
     public static void main(String[] args) {
@@ -55,7 +54,25 @@ public class assignment2new {
                         quiz q=new quiz();
                         q.show(count);
                     }else if (choose == 5){
-                        System.out.println("5");
+                        System.out.println("List of Assignemnts.");
+
+                        Assignment a= new Assignment();
+                        quiz q=new quiz();
+                        int c = a.show(0);
+                        c = q.show(c);
+
+                        System.out.print("Enter ID.");
+
+                        int ch = sc.nextInt();
+
+                        if(ch < Assignment.getA().size()) {
+                            a.grade(ch,  Integer.parseInt(Id.substring(Id.length()-1)));
+                        }
+                        else{
+                            a.grade(ch - Assignment.getA().size(), Integer.parseInt(Id.substring(Id.length()-1)));
+                        }
+
+
                     }else if (choose == 6){
                         instructor.close_assessment();
                     }else if (choose == 7){
@@ -213,15 +230,19 @@ public class assignment2new {
         if(assessmentChoice < Assignment_record.size()){
             System.out.print("Enter filename of assessment: ");
             String file_Assessment = sc.next();
+            int len=file_Assessment.length();
+            if(!file_Assessment.substring(len-4, len).equals(".zip")){
+                System.out.println("invalid input");
+            }
             Assignment.getA_rec().get(Assignment_record.get(assessmentChoice))[Id] = file_Assessment;
         }
         else{
-            System.out.println(quiz.getQ().get(assessmentChoice - Assignment_record.size()).quiz_ques);
-            sc.nextLine();
+            System.out.print(quiz.getQ().get(assessmentChoice - Assignment_record.size()).quiz_ques);
             String quiz_answer = sc.nextLine();
             quiz.getQ_rec().get(Quiz_record.get(assessmentChoice - Assignment_record.size()))[Id] = quiz_answer;
         }
 
+    
     }
 
 }
@@ -236,14 +257,14 @@ public class assignment2new {
 
         ArrayList<Integer> close_assignment = new ArrayList<>();
         ArrayList<Integer> close_quiz = new ArrayList<>();
+
         System.out.println("List of open assessments.");
 
-        Assignment A = new Assignment();
-        quiz Q = new quiz();
+
         int count = 0;
 
         for (int i = 0; i < Assignment.getA().size(); i++) {
-            if (Assignment.getA().get(i).getStatus().equals("Open")) {
+            if (Assignment.getA().get(i).status.equals("Open")) {
                 System.out.println("ID: " + count + " Assignment: " + Assignment.getA().get(i).getProblem_statement() + " Max Marks: " + Assignment.getA().get(i).getMaxmarks());
                 close_assignment.add(count);
                 count++;
@@ -253,13 +274,17 @@ public class assignment2new {
         System.out.println("--------------------------------------------------------------------------");
 
         for (int i = 0; i < quiz.getQ().size(); i++) {
-            if (quiz.getQ().get(i).getStatus().equals("Open")) {
+            if (quiz.getQ().get(i).status.equals("Open")) {
                 System.out.println("ID: " + count + " Question: " + quiz.getQ().get(i).getQuiz_ques());
                 close_quiz.add(count);
                 count++;
             }
         }
         System.out.println("-------------------------------------------------------------------------");
+        if (close_assignment.size() + close_quiz.size() == 0) {
+            System.out.println("No open assignments left ");
+            return;
+        }
 
         System.out.print("Enter if of assignemnt you want to close: ");
 
@@ -271,7 +296,7 @@ public class assignment2new {
             quiz.getQ().get(close_quiz.get(assignment_Id - close_assignment.size())).status= "Close";
         }
     }
-    
+
 }
 
     //-------------------------------------------------Video----------------------------------------------------------//
@@ -433,8 +458,7 @@ public class assignment2new {
         }
     }
 
-
-    //------------------------------------------------Assignment------------------------------------------------------//
+//----------------------------------------------------Assignment------------------------------------------------------//
     class Assignment implements Assisments{
         Scanner sc =new Scanner(System.in);
         String problem_statement;
@@ -454,6 +478,12 @@ public class assignment2new {
         }
         private static ArrayList<Assignment> A=new ArrayList<>();
         private static ArrayList<String[]> A_rec=new ArrayList<>();
+
+    public static ArrayList<int[]> getA_marks() {
+        return A_marks;
+    }
+
+    private static ArrayList<int []> A_marks=new ArrayList<>();
 
         public static ArrayList<String[]> getA_rec() {
             return A_rec;
@@ -508,15 +538,37 @@ public class assignment2new {
 
 
         @Override
-        public void show(int count) {
-          for( ;count<getA().size();count++){
-                System.out.println("ID: "+count+" Assignment :"+getA().get(count).getProblem_statement()+" Max Marks "+getA().get(count).getMaxmarks());
+        public int show(int count) {
+            for (int i=0; i < getA().size(); i++) {
+                System.out.println("ID: " + count + " Assignment :" + getA().get(i).getProblem_statement() + " Max Marks " + getA().get(i).getMaxmarks());
+                count++;
             }
             System.out.println("-------------------------------------------------------------------------");
+            return count;
+        }
+
+        @Override
+        public void grade(int indx,int instructor_id) {
+            int count  = 0;
+            System.out.println("Choose ID from these ungraded submissions.");
+            for (int i = 0 ; i < 3 ; i ++) {
+                if(A_rec.get(indx)[i] != null) {
+                    System.out.println(i + ".S" + i);
+                }
+            }
+            if (count == 0 ) {
+                System.out.println("No ungraded submission.");
+            }
+            int c = sc.nextInt();
+            System.out.println("Sumission: " + A_rec.get(indx)[c]);
+            System.out.println("Max Marks: " + A_rec.get(indx)[1]);
+            System.out.print("Marks Scored: ");
+            int marks = sc.nextInt();
+            A_marks.get(indx) [c] = marks;
         }
     }
 
-    //---------------------------------------------------Quiz---------------------------------------------------------//
+//-------------------------------------------------------Quiz---------------------------------------------------------//
     class quiz implements Assisments{
         Scanner sc=new Scanner(System.in);
         String instructorId;
@@ -547,8 +599,13 @@ public class assignment2new {
 
         private static ArrayList<quiz> Q=new ArrayList<>();
         private static ArrayList<String[]> Q_rec=new ArrayList<>();
+        private static ArrayList<int []> Q_marks=new ArrayList<>();
 
-        public static ArrayList<String[]> getQ_rec() {
+    public static ArrayList<int[]> getQ_marks() {
+        return Q_marks;
+    }
+
+    public static ArrayList<String[]> getQ_rec() {
             return Q_rec;
         }
 
@@ -590,13 +647,37 @@ public class assignment2new {
         }
 
         @Override
-        public void show(int count) {
-            for( ;count<getQ().size();count++){
-                System.out.println("ID: " +count+" Question: "+getQ().get(count).quiz_ques);
+        public int show(int count) {
+            for(int i=0 ;i<getQ().size();i++){
+                System.out.println("ID: " +count+" Question: "+getQ().get(i).quiz_ques);
+                count++;
             }
             System.out.println("---------------------------------------------------------------------------");
+            return count;
+        }
+
+        @Override
+        public void grade(int indx,int instructor_id) {
+            int count  = 0;
+            System.out.println("Choose ID from these ungraded submissions.");
+            for (int i = 0 ; i < 3 ; i ++) {
+                if(Q_rec.get(indx)[i] != null) {
+                    System.out.println(i + ".S" + i);
+                }
+            }
+            if (count == 0 ) {
+                System.out.println("No ungraded submission.");
+            }
+            int c = sc.nextInt();
+            System.out.println("Sumission: " + Q_rec.get(indx)[c]);
+            System.out.println("Max Marks: 1" + Q_rec.get(indx)[1]);
+            System.out.print("Marks Scored: ");
+            int marks = sc.nextInt();
+            Q_marks.get(indx)[c] = marks;
+
         }
     }
+
 //----------------------------------------------------comments--------------------------------------------------------//
 class comments implements Lecture_material{
 
@@ -658,7 +739,7 @@ class comments implements Lecture_material{
     }
 }
 
-//------------------------------------------------interface-------------------------------------------------------//
+//----------------------------------------------------interface-------------------------------------------------------//
 
     interface Lecture_material{
         public void add(String Id);
@@ -666,7 +747,8 @@ class comments implements Lecture_material{
     }
     interface Assisments{
         public void add(String Id);
-        public void show(int count);
+        public int show(int count);
+        public void grade(int index,int instructor_id);
     }
 
 
