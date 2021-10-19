@@ -57,7 +57,7 @@ public class assignment2new {
                     }else if (choose == 5){
                         System.out.println("5");
                     }else if (choose == 6){
-                        System.out.println("6");
+                        instructor.close_assessment();
                     }else if (choose == 7){
                         comments c=new comments();
                         c.show();
@@ -198,7 +198,7 @@ public class assignment2new {
             }
         }
         for( int i = 0; i<quiz.getQ().size(); i++){
-            if(quiz.getQ().get(i).getStatus().equals("open")) {
+            if(quiz.getQ().get(i).getStatus().equals("Open")) {
                 System.out.println("ID: " + counter + " Question: " + quiz.getQ().get(i).getQuiz_ques());
                 Quiz_record.add(counter);
                 counter++;
@@ -218,8 +218,8 @@ public class assignment2new {
         else{
             System.out.println(quiz.getQ().get(assessmentChoice - Assignment_record.size()).quiz_ques);
             sc.nextLine();
-            String quizAnswer = sc.nextLine();
-            quiz.getQ_rec().get(Quiz_record.get(assessmentChoice - Assignment_record.size()))[Id] = quizAnswer;
+            String quiz_answer = sc.nextLine();
+            quiz.getQ_rec().get(Quiz_record.get(assessmentChoice - Assignment_record.size()))[Id] = quiz_answer;
         }
 
     }
@@ -228,11 +228,51 @@ public class assignment2new {
 
 //------------------------------------------------------Instructor----------------------------------------------------//
     class instructor {
+    Scanner sc = new Scanner(System.in);
 
-        public void submit_assignment(){
 
+    public static void close_assessment() {
+        Scanner sc = new Scanner(System.in);
+
+        ArrayList<Integer> close_assignment = new ArrayList<>();
+        ArrayList<Integer> close_quiz = new ArrayList<>();
+        System.out.println("List of open assessments.");
+
+        Assignment A = new Assignment();
+        quiz Q = new quiz();
+        int count = 0;
+
+        for (int i = 0; i < Assignment.getA().size(); i++) {
+            if (Assignment.getA().get(i).getStatus().equals("Open")) {
+                System.out.println("ID: " + count + " Assignment: " + Assignment.getA().get(i).getProblem_statement() + " Max Marks: " + Assignment.getA().get(i).getMaxmarks());
+                close_assignment.add(count);
+                count++;
+            }
+        }
+
+        System.out.println("--------------------------------------------------------------------------");
+
+        for (int i = 0; i < quiz.getQ().size(); i++) {
+            if (quiz.getQ().get(i).getStatus().equals("Open")) {
+                System.out.println("ID: " + count + " Question: " + quiz.getQ().get(i).getQuiz_ques());
+                close_quiz.add(count);
+                count++;
+            }
+        }
+        System.out.println("-------------------------------------------------------------------------");
+
+        System.out.print("Enter if of assignemnt you want to close: ");
+
+        int assignment_Id = sc.nextInt();
+
+        if (assignment_Id < close_assignment.size()) {
+            Assignment.getA().get(close_assignment.get(assignment_Id)).status = "Close";
+        } else {
+            quiz.getQ().get(close_quiz.get(assignment_Id - close_assignment.size())).status= "Close";
         }
     }
+    
+}
 
     //-------------------------------------------------Video----------------------------------------------------------//
     class Video implements Lecture_material{
@@ -541,7 +581,7 @@ public class assignment2new {
             Date dateobject = new Date();
             SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
             String Date=date.format(dateobject);
-            String status="open";
+            String status="Open";
             int maxmarks=1;
             quiz q=new quiz(instructorId,Date,quiz_ques,status,maxmarks);
             Q.add(q);
