@@ -43,24 +43,31 @@ public class assignment2new {
                     }else if (choose == 3){
                         Slides s=new Slides();
                         s.show();
+                        System.out.println();
                         Video v = new Video();
                         v.show();
 
                     }else if (choose == 4){
+                        int count=0;
                         Assignment a= new Assignment();
-                        a.show();
+                        a.show(count);
+                        System.out.println();
                         quiz q=new quiz();
-                        q.show();
+                        q.show(count);
                     }else if (choose == 5){
                         System.out.println("5");
                     }else if (choose == 6){
                         System.out.println("6");
                     }else if (choose == 7){
-                        System.out.println("7");
+                        comments c=new comments();
+                        c.show();
                     }else if (choose == 8){
-                        System.out.println("8");
+                        comments c=new comments();
+                        c.add(Id.substring(Id.length()-2,Id.length()));
                     }else if (choose == 9){
                         break;
+                    }else{
+                        System.out.println("Wrong Input");
                     }
                 }
             }else if(welcome==2){
@@ -70,19 +77,33 @@ public class assignment2new {
                     StudentMenu();
                     int choose= sc.nextInt();
                     if (choose==1){
-                        System.out.println("1");
+                        Slides s=new Slides();
+                        s.show();
+                        System.out.println();
+                        Video v = new Video();
+                        v.show();
                     } else if (choose == 2) {
-                        System.out.println("2");
+                        int count=0;
+                        Assignment a= new Assignment();
+                        a.show(count);
+                        System.out.println();
+                        quiz q=new quiz();
+                        q.show(count);
                     }else if (choose == 3){
-                        System.out.println("3");
+                        student s=new student();
+                        s.submit(Integer.parseInt(ID.substring(ID.length()-1,ID.length())));
                     }else if (choose == 4){
                         System.out.println("4");
                     }else if (choose == 5){
-                        System.out.println("5");
+                        comments c=new comments();
+                        c.show();
                     }else if (choose == 6){
-                        System.out.println("6");
+                        comments c=new comments();
+                        c.add(ID.substring(ID.length()-2,ID.length()));
                     }else if (choose == 7){
                         break;
+                    }else{
+                        System.out.println("Wrong input");
                     }
                 }
             }else if(welcome==3){
@@ -157,93 +178,60 @@ public class assignment2new {
 
 }
 //-----------------------------------------------------Student--------------------------------------------------------//
-    class student implements show_menu{
+    class student {
+    Scanner sc=new Scanner(System.in);
 
-        public void submit_Assesments(){
+    public void submit(int Id){
+        ArrayList<Integer> Assignment_record = new ArrayList<>();
+        ArrayList<Integer> Quiz_record = new ArrayList<>();
 
-        }
+        System.out.println("Pending assessments");
+        int counter = 0;
 
-        @Override
-        public void wellcome_menu() {
-            System.out.println("Welcome to Backpack\n" +
-                    "1. Enter as instructor\n" +
-                    "2. Enter as student\n" +
-                    "3. Exit");
-        }
-
-        @Override
-        public void Show_menu() {
-            System.out.println("1. View lecture materials\n" +
-                    "2. View assessments\n" +
-                    "3. Submit assessment\n" +
-                    "4. View grades\n" +
-                    "5. View comments\n" +
-                    "6. Add comments\n" +
-                    "7. Logout");
-        }
-
-        @Override
-        public void Set_id() {
-            int count=3;
-            Scanner sc= new Scanner(System.in);
-            System.out.println("Students:");
-            for(int i=0;i<count;i++){
-                System.out.println(i+" - "+"S"+i);
-            }
-            System.out.println("Choose id:");
-            int choose=sc.nextInt();
-            for(int i =0;i<count;i++){
-                if(choose==i){
-                    System.out.println("Welcome "+"S"+i);
-                }
+        Assignment A = new Assignment();
+        quiz q = new quiz();
+        for( int i = 0; i<Assignment.getA().size(); i++){
+            if(Assignment.getA().get(i).getStatus().equals("Open")) {
+                System.out.println("ID: " + counter + " Assignment: " + Assignment.getA().get(i).getProblem_statement());
+                Assignment_record.add(counter);
+                counter++;
             }
         }
+        for( int i = 0; i<quiz.getQ().size(); i++){
+            if(quiz.getQ().get(i).getStatus().equals("open")) {
+                System.out.println("ID: " + counter + " Question: " + quiz.getQ().get(i).getQuiz_ques());
+                Quiz_record.add(counter);
+                counter++;
+            }
+
+
+        }
+
+        System.out.print("Enter ID of assessment: ");
+        int assessmentChoice = sc.nextInt();
+
+        if(assessmentChoice < Assignment_record.size()){
+            System.out.print("Enter filename of assessment: ");
+            String file_Assessment = sc.next();
+            Assignment.getA_rec().get(Assignment_record.get(assessmentChoice))[Id] = file_Assessment;
+        }
+        else{
+            System.out.println(quiz.getQ().get(assessmentChoice - Assignment_record.size()).quiz_ques);
+            sc.nextLine();
+            String quizAnswer = sc.nextLine();
+            quiz.getQ_rec().get(Quiz_record.get(assessmentChoice - Assignment_record.size()))[Id] = quizAnswer;
+        }
+
     }
 
+}
+
 //------------------------------------------------------Instructor----------------------------------------------------//
-    class instructor extends Student implements show_menu{
+    class instructor {
 
         public void submit_assignment(){
 
         }
-        @Override
-        public void wellcome_menu() {
-            System.out.println("Welcome to Backpack\n" +
-                    "1. Enter as instructor\n" +
-                    "2. Enter as student\n" +
-                    "3. Exit");
-        }
-
-        @Override
-        public void Show_menu() {
-            System.out.println("1. Add class material\n" +
-                    "2. Add assessments\n" +
-                    "3. View lecture materials\n" +
-                    "4. View assessments\n" +
-                    "5. Grade assessments\n" +
-                    "6. Close assessment\n" +
-                    "7. View comments\n" +
-                    "8. Add comments\n" +
-                    "9. Logout");
-        }
-
-        @Override
-        public void Set_id() {
-            int count=2;
-            Scanner sc= new Scanner(System.in);
-            System.out.println("Instructors:");
-            for(int i=0;i<count;i++){
-                System.out.println(i+" - "+"I"+i);
-            }
-            System.out.println("Choose id:");
-            int choose=sc.nextInt();
-            for(int i =0;i<count;i++){
-                if(choose==i){
-                    System.out.println("Welcome "+"I"+i);
-                }
-            }
-        }
-
     }
 
     //-------------------------------------------------Video----------------------------------------------------------//
@@ -298,7 +286,7 @@ public class assignment2new {
             System.out.println("Enter filename of video:");
             String filename=sc.next();
             int len=filename.length();
-            if(!filename.substring(len-4, len).equals("mp4")){
+            if(!filename.substring(len-4, len).equals(".mp4")){
                 System.out.println("invalid input");
             }
             Date dateobject = new Date();
@@ -412,23 +400,35 @@ public class assignment2new {
         String problem_statement;
         String Date;
         String instructorID;
+        String status;
         int maxmarks;
 
         public Assignment(){
         }
-        public Assignment( String problem_statement,String Date,String instructorID,int maxmarks){
+        public Assignment( String problem_statement,String Date,String instructorID,int maxmarks,String status){
             this.Date=Date;
             this.instructorID=instructorID;
             this.maxmarks=maxmarks;
             this.problem_statement=problem_statement;
+            this.status=status;
         }
         private static ArrayList<Assignment> A=new ArrayList<>();
+        private static ArrayList<String[]> A_rec=new ArrayList<>();
+
+        public static ArrayList<String[]> getA_rec() {
+            return A_rec;
+        }
+
         public String getProblem_statement() {
             return problem_statement;
         }
 
         public String getDate() {
             return Date;
+        }
+
+        public String getStatus() {
+            return status;
         }
 
         public String getInstructorID() {
@@ -451,25 +451,28 @@ public class assignment2new {
             }else if(Id.equals("Welcome I1")){
                 instructorId="I1";
             }
-            System.out.println("Enter problem statement:");
-            String problem_statement=sc.next();
-            System.out.println("Enter max marks:");
+            System.out.print("Enter problem statement:");
+            String problem_statement=sc.nextLine();
+//            sc.next();
+            System.out.print("Enter max marks:");
             int max_marks=sc.nextInt();
             Date dateobject = new Date();
             SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
             String Date=date.format(dateobject);
-            Assignment a=new Assignment(problem_statement,Date,instructorId,max_marks);
+            String status="Open";
+            Assignment a=new Assignment(problem_statement,Date,instructorId,max_marks,status);
             A.add(a);
+            String temp[]={null,null,null};
+            A_rec.add(temp);
         }
 
 
         @Override
-        public void show() {
-          for(int i=0;i<getA().size();i++){
-                System.out.println("ID: "+i+" Assignment :"+getA().get(i).getProblem_statement()+" Max Marks "+getA().get(i).getMaxmarks());
+        public void show(int count) {
+          for( ;count<getA().size();count++){
+                System.out.println("ID: "+count+" Assignment :"+getA().get(count).getProblem_statement()+" Max Marks "+getA().get(count).getMaxmarks());
             }
             System.out.println("-------------------------------------------------------------------------");
-
         }
     }
 
@@ -479,17 +482,35 @@ public class assignment2new {
         String instructorId;
         String Date;
         String quiz_ques;
+        String status;
+        int maxmarks;
 
         public quiz(){
 
         }
-        public quiz(String instructorId,String Date,String quiz_ques){
+
+        public String getStatus() {
+            return status;
+        }
+
+        public int getMaxmarks() {
+            return maxmarks;
+        }
+
+        public quiz(String instructorId, String Date, String quiz_ques, String status, int maxmarks){
             this.Date=Date;
             this.instructorId=instructorId;
             this.quiz_ques=quiz_ques;
+            this.status=status;
+            this.maxmarks=maxmarks;
         }
 
         private static ArrayList<quiz> Q=new ArrayList<>();
+        private static ArrayList<String[]> Q_rec=new ArrayList<>();
+
+        public static ArrayList<String[]> getQ_rec() {
+            return Q_rec;
+        }
 
         public String getInstructorId() {
             return instructorId;
@@ -516,39 +537,96 @@ public class assignment2new {
                 instructorId="I1";
             }
             System.out.println("Enter quiz question:");
-            String quiz_ques=sc.next();
+            String quiz_ques=sc.nextLine();
             Date dateobject = new Date();
             SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
             String Date=date.format(dateobject);
-            quiz q=new quiz(instructorId,Date,quiz_ques);
+            String status="open";
+            int maxmarks=1;
+            quiz q=new quiz(instructorId,Date,quiz_ques,status,maxmarks);
             Q.add(q);
+            String temp[]={null,null,null};
+            Q_rec.add(temp);
         }
 
         @Override
-        public void show() {
-            for(int i=0;i<getQ().size();i++){
-                System.out.println("ID: " +i+" Question: "+getQ().get(i).quiz_ques);
+        public void show(int count) {
+            for( ;count<getQ().size();count++){
+                System.out.println("ID: " +count+" Question: "+getQ().get(count).quiz_ques);
             }
             System.out.println("---------------------------------------------------------------------------");
-
         }
     }
+//----------------------------------------------------comments--------------------------------------------------------//
+class comments implements Lecture_material{
 
+    private String comment;
+    private String time;
+    private String user;
 
-    //------------------------------------------------interface-------------------------------------------------------//
-    interface  show_menu{
-        public void wellcome_menu();
-        public void Show_menu();
-        public void Set_id();
+    public comments() {
 
     }
+
+    public comments(String comment, String time, String  user) {
+        this.comment = comment;
+        this.time = time;
+        this.user = user;
+    }
+
+    static ArrayList <comments> comment_list = new ArrayList<>();
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public static ArrayList<comments> getComment_list() {
+        return comment_list;
+    }
+
+    Date dateobject = new Date();
+    SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
+
+    @Override
+    public void add(String addedby) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter comment: ");
+        String comment = sc.nextLine();
+        String user = addedby;
+        SimpleDateFormat date = new SimpleDateFormat("E,dd MM yyyy HH:mm:ss z");
+        String time=date.format(dateobject);
+
+        comments comment_obj = new comments(comment , time , user);
+        getComment_list().add(comment_obj);
+    }
+
+    @Override
+    public void show() {
+        for (int i = 0 ; i < getComment_list().size() ; i++) {
+            System.out.println(getComment_list().get(i).getComment() + " - " + getComment_list().get(i).getUser());
+            System.out.println(getComment_list().get(i).getTime());
+        }
+    }
+}
+
+//------------------------------------------------interface-------------------------------------------------------//
+
     interface Lecture_material{
         public void add(String Id);
         public void show();
     }
     interface Assisments{
         public void add(String Id);
-        public void show();
+        public void show(int count);
     }
 
 
