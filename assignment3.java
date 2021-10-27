@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class SLGame {
+public class demo1 {
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
@@ -20,11 +20,10 @@ public class SLGame {
             System.out.println("Dice gave " + dicenumber);
             if (dicenumber == 1){
                 System.out.println("Player position Floor-0");
-
                 System.out.println(player.getName() + " has reached an Empty Floor");
                 System.out.println("Total points 1");
                 player.setPos(0);
-                player.setPoints(1);
+                player.setPoints(player.getPoints()+1);
                 break;
             }
             System.out.println("Game cannot start until you get 1");
@@ -44,10 +43,11 @@ public class SLGame {
             if(c > 13){
                 System.out.println("player cannot move");
             }
-            else if (c==1 || c == 3 || c == 4 || c == 6 || c == 7 || c == 9 || c == 10 || c == 12) {
+            else if (c==0 || c==1 ||  c == 3  ||  c == 4 || c == 6 || c == 7 || c == 9 || c == 10 || c == 12) {
                 System.out.println("Player position Floor-" + c);
                 System.out.println(player.getName() + " has reached an Empty Floor");
                 player.setPos(player.getPos()+1);
+                player.setPoints(player.getPoints()+1);
                 System.out.println("Total Points " +  player.getPoints());
             }
             else if (c == 2) { // elevator
@@ -123,11 +123,11 @@ class player{
 
     public static void setPos(int pos) { player.pos = pos; }
 
-    public static int getPoints() { return points; }
+    public static int getPoints() { return player.points; }
 
-    public static String getName() { return name; }
+    public static String getName() { return player.name; }
 
-    public static int getPos() { return pos; }
+    public static int getPos() { return player.pos; }
 }
 
 
@@ -186,7 +186,7 @@ class normal_ladder extends upGoing{
     upGoing up = new upGoing();
 
     public static void points() {
-        player.setPoints(2);
+        player.setPoints(player.getPoints()+2);
     }
 
     public static void floor() {
@@ -200,7 +200,7 @@ class Elivator_ladder extends upGoing{
     upGoing up = new upGoing();
 
     public static void points() {
-        player.setPoints(4);
+        player.setPoints(player.getPoints()+4);
     }
 
     public static void floor() {
@@ -215,7 +215,7 @@ class normal_snake extends downGoing{
     downGoing down =new downGoing();
 
     public static void point() {
-        player.setPoints(-2);
+        player.setPoints(player.getPoints()-2);
     }
 
     public static void floor() {
@@ -228,7 +228,7 @@ class King_cobra extends downGoing{
     downGoing down =new downGoing();
 
     public static void point() {
-        player.setPoints(-4);
+        player.setPoints(player.getPoints()-4);
     }
 
     public static void floor() {
