@@ -39,12 +39,23 @@ public class demo1 {
             if(c > 13){
                 System.out.println("player cannot move");
             }
-            else if (c==0 || c==1 ||  c == 3  ||  c == 4 || c == 6 || c == 7 || c == 9 || c == 10 || c == 12) {
+            else if (c==0 || c==1 || /* c == 3  || */ c == 4 || c == 6 || c == 7 || c == 9 || c == 10 || c == 12) {
                 System.out.println("Player position Floor-" + c);
                 System.out.println(player.getName() + " has reached an Empty Floor");
                 player.setPos(player.getPos()+1);
                 player.setPoints(player.getPoints()+1);
                 System.out.println("Total Points " +  player.getPoints());
+            }
+            else if(c == 3){// mine floor
+                System.out.println("Player position Floor-" + c);
+                System.out.println(player.getName() + " has reached an Mine Floor");
+                player.setPos(player.getPos()+1);
+                player.setPoints(0);
+                System.out.println("Total Points " +  player.getPoints());
+                System.out.println("Game Over");
+                System.out.println(player.getName() + " Accumulated " + player.getPoints() + " points");
+
+                break;
             }
             else if (c == 2) { // elevator
                 System.out.println("Player position Floor-" + c);
