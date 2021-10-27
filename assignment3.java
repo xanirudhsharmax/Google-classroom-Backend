@@ -34,12 +34,8 @@ public class demo1 {
             sc.nextLine();
             dice d = new dice();
             int dicenumber = d.getNumber();
-
-            player.setPoints(dicenumber);
             System.out.println("Dice gave " + dicenumber);
-
             int c = player.getPos() + dicenumber;
-
             if(c > 13){
                 System.out.println("player cannot move");
             }
@@ -235,4 +231,3 @@ class King_cobra extends downGoing{
         player.setPos(3);
     }
 }
-
