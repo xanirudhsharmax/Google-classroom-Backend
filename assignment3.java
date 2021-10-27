@@ -235,3 +235,4 @@ class King_cobra extends downGoing{
         player.setPos(3);
     }
 }
+
